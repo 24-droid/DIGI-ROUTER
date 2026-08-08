@@ -11,7 +11,7 @@ const {
   getRouterDetails,
   getFleetOverview
 } = require('../services/dataLoader');
-const { askCopilot } = require('../services/copilotService');
+const { askCopilot, askCopilotStream } = require('../services/copilotService');
 
 // 1. System Health Check
 router.get('/health', (req, res) => {
@@ -90,6 +90,31 @@ router.post('/copilot/ask', async (req, res) => {
     res.json(copilotAnswer);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// 7. Real-Time AI Copilot SSE Diagnostic Stream Endpoint
+router.get('/copilot/stream', async (req, res) => {
+  try {
+    const { router_id, question } = req.query;
+    if (!router_id) {
+      return res.status(400).json({ error: 'Missing required query param: router_id' });
+    }
+    await askCopilotStream(router_id, question, res);
+  } catch (err) {
+    if (!res.headersSent) res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/copilot/stream', async (req, res) => {
+  try {
+    const { router_id, question } = req.body;
+    if (!router_id) {
+      return res.status(400).json({ error: 'Missing required field: router_id' });
+    }
+    await askCopilotStream(router_id, question, res);
+  } catch (err) {
+    if (!res.headersSent) res.status(500).json({ error: err.message });
   }
 });
 
