@@ -29,14 +29,27 @@ app.use('/api', apiRoutes);
 const clientBuildPath = path.join(__dirname, '../client/dist');
 if (require('fs').existsSync(clientBuildPath)) {
   app.use(express.static(clientBuildPath));
-  app.get('*', (req, res) => {
+  // SPA fallback — regex avoids Express 5 path-to-regexp wildcard breakage
+  app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(clientBuildPath, 'index.html'));
   });
 }
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`====================================================`);
   console.log(`🚀 Campus Router Health 360 Server running on port ${PORT}`);
   console.log(`📊 API endpoints available at http://localhost:${PORT}/api/health`);
   console.log(`====================================================`);
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`\n❌ Port ${PORT} is already in use.`);
+    console.error(`   Another server instance is likely still running.`);
+    console.error(`\n   Fix (PowerShell):`);
+    console.error(`   netstat -ano | findstr :${PORT}`);
+    console.error(`   taskkill /PID <PID> /F\n`);
+    process.exit(1);
+  }
+  throw err;
 });

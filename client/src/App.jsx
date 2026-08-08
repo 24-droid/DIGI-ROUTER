@@ -92,48 +92,54 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-slate-100 p-3 sm:p-6 max-w-[1680px] mx-auto font-sans">
-      {/* Header Overview Banner */}
-      <HeaderOverview overview={overview} loading={loadingOverview} />
+    <div className="min-h-screen relative">
+      <div className="fixed inset-0 bg-grid pointer-events-none z-0" />
 
-      {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: Rankings Table (5 cols on lg) */}
-        <div className="lg:col-span-5 flex flex-col min-h-[500px]">
-          <WorstTenTable
-            routers={routers}
-            selectedRouterId={selectedRouterId}
-            onSelectRouter={(id) => setSelectedRouterId(id)}
-            buildings={overview?.buildings || []}
-            firmwares={overview?.firmwares || []}
-            filters={filters}
-            onFilterChange={(newF) => setFilters(newF)}
-            loading={loadingRouters}
-          />
+      <div className="relative z-10 text-slate-100 p-3 sm:p-5 lg:p-6 max-w-[1720px] mx-auto font-sans">
+        <HeaderOverview overview={overview} loading={loadingOverview} />
+
+        {/* Two-column: Rankings + Router Detail */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 mb-4 lg:mb-5">
+          <div className="lg:col-span-5 flex flex-col">
+            <WorstTenTable
+              routers={routers}
+              selectedRouterId={selectedRouterId}
+              onSelectRouter={(id) => setSelectedRouterId(id)}
+              buildings={overview?.buildings || []}
+              firmwares={overview?.firmwares || []}
+              filters={filters}
+              onFilterChange={(newF) => setFilters(newF)}
+              loading={loadingRouters}
+            />
+          </div>
+
+          <div className="lg:col-span-7 flex flex-col">
+            <RouterDetailPanel
+              routerDetail={selectedRouterDetail}
+              loading={loadingDetail}
+            />
+          </div>
         </div>
 
-        {/* Right Column: Detail Panel + Copilot (7 cols on lg) */}
-        <div className="lg:col-span-7 flex flex-col gap-6">
-          <RouterDetailPanel
-            routerDetail={selectedRouterDetail}
-            loading={loadingDetail}
-          />
-
+        {/* Full-width AI Copilot */}
+        <div className="mb-4 lg:mb-5">
           <CopilotPanel
             selectedRouterId={selectedRouterId}
             selectedRouterDetail={selectedRouterDetail}
           />
         </div>
+
+        {/* Bonus Analytics */}
+        <BonusAnalyticsPanel overview={overview} routers={routers} />
+
+        <footer className="mt-8 pt-4 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            <p className="text-xs text-slate-500">Campus Router Health 360 · DigiPlus IT Agentic AI Hackathon Solution</p>
+          </div>
+          <p className="font-mono text-[10px] text-slate-600 tracking-wider uppercase">MERN Stack · Data Grounded Diagnosis</p>
+        </footer>
       </div>
-
-      {/* Bonus Analytics Row */}
-      <BonusAnalyticsPanel overview={overview} routers={routers} />
-
-      {/* Footer */}
-      <footer className="mt-10 pt-4 border-t border-slate-800/80 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
-        <p>Campus Router Health 360 · DigiPlus IT Agentic AI Hackathon Solution</p>
-        <p className="font-mono text-[11px] text-slate-600">MERN Stack • Data Grounded Diagnosis</p>
-      </footer>
     </div>
   );
 }
