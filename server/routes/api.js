@@ -1,8 +1,7 @@
 /**
  * Express REST API Routes
- * Endpoints for fleet overview, rankings, router details, filters, and copilot Q&A.
+ * Endpoints for fleet overview, rankings, router details, filters, and copilot Q&A. okay then
  */
-
 const express = require('express');
 const router = express.Router();
 const {
