@@ -4,6 +4,7 @@ import WorstTenTable from '../components/WorstTenTable';
 import RouterDetailPanel from '../components/RouterDetailPanel';
 import CopilotPanel from '../components/CopilotPanel';
 import BonusAnalyticsPanel from '../components/BonusAnalyticsPanel';
+import { API_BASE_URL } from '../config';
 
 export default function Dashboard() {
   const [overview, setOverview] = useState(null);
@@ -38,7 +39,7 @@ export default function Dashboard() {
   const fetchOverview = async () => {
     setLoadingOverview(true);
     try {
-      const res = await fetch('/api/analytics/overview');
+      const res = await fetch(`${API_BASE_URL}/api/analytics/overview`);
       if (res.ok) {
         const data = await res.json();
         setOverview(data);
@@ -60,7 +61,7 @@ export default function Dashboard() {
       if (filters.search) queryParams.append('search', filters.search);
       queryParams.append('sortBy', 'health_asc');
 
-      const res = await fetch(`/api/routers?${queryParams.toString()}`);
+      const res = await fetch(`${API_BASE_URL}/api/routers?${queryParams.toString()}`);
       if (res.ok) {
         const data = await res.json();
         setRouters(data.routers || []);
@@ -79,7 +80,7 @@ export default function Dashboard() {
   const fetchRouterDetail = async (id) => {
     setLoadingDetail(true);
     try {
-      const res = await fetch(`/api/routers/${id}`);
+      const res = await fetch(`${API_BASE_URL}/api/routers/${id}`);
       if (res.ok) {
         const data = await res.json();
         setSelectedRouterDetail(data);

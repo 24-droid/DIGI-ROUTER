@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Bot, Sparkles, CheckCircle2, AlertCircle, Wrench, RefreshCw, Cpu, Send, Check, Zap } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 export default function CopilotPanel({ selectedRouterId, selectedRouterDetail }) {
   const [question, setQuestion] = useState('');
@@ -22,7 +23,7 @@ export default function CopilotPanel({ selectedRouterId, selectedRouterDetail })
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/copilot/ask', {
+      const res = await fetch(`${API_BASE_URL}/api/copilot/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
