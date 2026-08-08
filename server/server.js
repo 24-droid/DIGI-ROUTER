@@ -16,7 +16,23 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  'https://digi-router-swart.vercel.app',
+  process.env.CLIENT_URL,
+  'http://localhost:3000',
+  'http://localhost:5173'
+].filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 // Ingest CSV dataset on boot
@@ -39,7 +55,9 @@ if (require('fs').existsSync(clientBuildPath)) {
 const server = app.listen(PORT, () => {
   console.log(`====================================================`);
   console.log(`🚀 Campus Router Health 360 Server running on port ${PORT}`);
-  console.log(`📊 API endpoints available at http://localhost:${PORT}/api/health`);
+  console.log(`🌐 Live Frontend: https://digi-router-swart.vercel.app`);
+  console.log(`⚡ Live Backend: https://digi-router-1.onrender.com`);
+  console.log(`📊 Health Endpoint: https://digi-router-1.onrender.com/api/health`);
   console.log(`====================================================`);
 });
 
