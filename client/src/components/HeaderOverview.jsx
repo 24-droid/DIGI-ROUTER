@@ -1,5 +1,6 @@
 import React from 'react';
-import { Wifi, AlertTriangle, ShieldCheck, Activity, MessageSquare, Server, ChevronRight, Radio } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Wifi, AlertTriangle, ShieldCheck, Activity, MessageSquare, Server, ChevronRight, Radio, ArrowLeft } from 'lucide-react';
 import CsvUploadSection from './CsvUploadSection';
 
 export default function HeaderOverview({ overview, loading }) {
@@ -116,11 +117,14 @@ export default function HeaderOverview({ overview, loading }) {
           </div>
           <div>
             <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium mb-1">
-              <span>DigiPlus Hackathon</span>
+              <Link to="/" className="text-slate-400 hover:text-cyan-400 flex items-center gap-1 transition-colors">
+                <ArrowLeft className="w-3 h-3" />
+                <span>Landing Page</span>
+              </Link>
               <ChevronRight className="w-3 h-3 text-slate-700" />
               <span className="text-slate-400">Campus Infrastructure</span>
               <ChevronRight className="w-3 h-3 text-slate-700" />
-              <span className="text-cyan-400 font-semibold font-mono">Q1 Solution</span>
+              <span className="text-cyan-400 font-semibold font-mono">Live Operations</span>
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-gradient leading-tight">
               Campus Router Health 360
@@ -130,6 +134,14 @@ export default function HeaderOverview({ overview, loading }) {
 
         {/* Live Beacon + Fleet Index */}
         <div className="flex items-center gap-3 flex-wrap">
+          <Link
+            to="/"
+            className="px-3.5 py-2 rounded-2xl bg-dark-900/80 hover:bg-slate-800/80 border border-white/[0.1] text-xs flex items-center gap-2 text-slate-300 hover:text-white transition-all backdrop-blur-sm"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Landing Page</span>
+          </Link>
+
           <div className="px-3.5 py-2 rounded-2xl bg-dark-900/80 border border-white/[0.07] text-xs flex items-center gap-2.5 backdrop-blur-sm">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
